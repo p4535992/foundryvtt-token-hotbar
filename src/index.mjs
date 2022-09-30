@@ -1,32 +1,31 @@
-import { TH, log, warn } from './src/constants.mjs';
+import { TH, log, warn } from "./src/constants.mjs";
 import {
-    saveHotbar,
-    updateHotbar,
-    loadHotbar,
-    updateCustomHotbar,
-    loadCustomHotbar,
-    saveUserHotbarOnFirstUse
-} from './src/features.mjs';
-import { registerModuleSettings, getModuleSettings, settingKeys } from './src/settings.mjs';
+	saveHotbar,
+	updateHotbar,
+	loadHotbar,
+	updateCustomHotbar,
+	loadCustomHotbar,
+	saveUserHotbarOnFirstUse,
+} from "./src/features.mjs";
+import { registerModuleSettings, getModuleSettings, settingKeys } from "./src/settings.mjs";
 
 // Register settings when the game is properly initialized
 // This is exactly what the 'init' hook is for:
-Hooks.on('init', () => {
-    const hasCustomHotbar = !!game.modules.get('custom-hotbar');
-    registerModuleSettings(game.settings, hasCustomHotbar);
-    log("Module Initialized!");
+Hooks.on("init", () => {
+	const hasCustomHotbar = !!game.modules.get("custom-hotbar");
+	registerModuleSettings(game.settings, hasCustomHotbar);
+	log("Module Initialized!");
 });
 
-Hooks.on('ready', () => {
-    const getSetting = getModuleSettings(game.settings);
-    if (getSetting(settingKeys.useCustomHotbar) && !ui.customHotbar) {
-        warn('Settings use Custom Hotbar, but Custom Hotbar is installed or enabled. Using standard hotbar instead.')
-        game.settings.set(TH.name, settingKeys.useCustomHotbar, false);
-    }
+Hooks.on("ready", () => {
+	const getSetting = getModuleSettings(game.settings);
+	if (getSetting(settingKeys.useCustomHotbar) && !ui.customHotbar) {
+		warn("Settings use Custom Hotbar, but Custom Hotbar is installed or enabled. Using standard hotbar instead.");
+		game.settings.set(TH.name, settingKeys.useCustomHotbar, false);
+	}
 
-    saveUserHotbarOnFirstUse(game.user, game.user.data.hotbar);
+	saveUserHotbarOnFirstUse(game.user, game.user.data.hotbar);
 });
-
 
 // Let's save the hotbar whenever
 //  - a token is selected
@@ -38,18 +37,18 @@ Hooks.on('ready', () => {
 //  - It's sent to other clients
 //  - There's no other hooks that contain the hotbar data that we need
 Hooks.on("updateUser", (user, data) => {
-    const controlledTokens = game.canvas.tokens.controlled;
-    const getSetting = getModuleSettings(game.settings);
+	const controlledTokens = game.canvas.tokens.controlled;
+	const getSetting = getModuleSettings(game.settings);
 
-    if (!getSetting(settingKeys.enableHotbar)) {
-        return;
-    }
+	if (!getSetting(settingKeys.enableHotbar)) {
+		return;
+	}
 
-    if (getSetting(settingKeys.useCustomHotbar) && ui.customHotbar) {
-        updateCustomHotbar(controlledTokens, game.user, user, data, getSetting, ui.customHotbar);
-    } else {
-        updateHotbar(controlledTokens, game.user, user, data, getSetting);
-    }
+	if (getSetting(settingKeys.useCustomHotbar) && ui.customHotbar) {
+		updateCustomHotbar(controlledTokens, game.user, user, data, getSetting, ui.customHotbar);
+	} else {
+		updateHotbar(controlledTokens, game.user, user, data, getSetting);
+	}
 });
 
 // Let's load the hotbar when
@@ -63,27 +62,27 @@ Hooks.on("updateUser", (user, data) => {
 
 let controlTokenTimeout;
 Hooks.on("controlToken", (object, isControlled) => {
-    const getSetting = getModuleSettings(game.settings);
-    if (!getSetting(settingKeys.enableHotbar)) {
-        return;
-    }
+	const getSetting = getModuleSettings(game.settings);
+	if (!getSetting(settingKeys.enableHotbar)) {
+		return;
+	}
 
-    if (controlTokenTimeout) {
-        window.clearTimeout(controlTokenTimeout);
-    }
+	if (controlTokenTimeout) {
+		window.clearTimeout(controlTokenTimeout);
+	}
 
-    controlTokenTimeout = window.setTimeout(() => {
-        const controlledTokens = game.canvas.tokens.controlled;
+	controlTokenTimeout = window.setTimeout(() => {
+		const controlledTokens = game.canvas.tokens.controlled;
 
-        if (getSetting(settingKeys.useCustomHotbar) && ui.customHotbar) {
-            loadCustomHotbar(game.user, controlledTokens, getSetting, ui.customHotbar);
-        } else {
-            if(loadHotbar(game.user, controlledTokens, getSetting)) {
-                // Only re-render the hotbar, if it actually changed because of us
-                ui.hotbar.render();
-            }
-        }
-    }, 100);
+		if (getSetting(settingKeys.useCustomHotbar) && ui.customHotbar) {
+			loadCustomHotbar(game.user, controlledTokens, getSetting, ui.customHotbar);
+		} else {
+			if (loadHotbar(game.user, controlledTokens, getSetting)) {
+				// Only re-render the hotbar, if it actually changed because of us
+				ui.hotbar.render();
+			}
+		}
+	}, 100);
 });
 
 // Note: we try to stay clear from global variables (game.canvas for example)
@@ -95,4 +94,4 @@ Hooks.on("controlToken", (object, isControlled) => {
 
 // Finally, we would like to save from macro's, so sharing becomes easier.
 // Easiest way to do that is to add a TokenHotbar object to the global scope
-window[TH.name] = { saveHotbar }
+window[TH.name] = { saveHotbar };
