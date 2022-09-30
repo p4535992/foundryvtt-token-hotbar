@@ -17,7 +17,7 @@
 				"name": "Enable Token Hotbar",
 				"hint": "Enable the Token Hotbar on this client. NOTE: If you don' see the token bar with this module setting checked is probably because the GM has activated the module settings 'Enable Token Hotbar by role' to a value not equal to 'none'."
 			},
-            "enableHotbarByRole": {
+			"enableHotbarByRole": {
 				"name": "Enable Token Hotbar by role (default role is GM)",
 				"hint": "Enable the Token Hotbar by role (default role is GM). THIS WILL DISABLE ANY 'Enable Token Hotbar' set to true if the value is not 'none'. "
 			},

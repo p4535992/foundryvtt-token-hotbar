@@ -42,7 +42,7 @@ await describe("The Token Hotbar saves when...", async () => {
         var savedHotbar = await updateHotbar([ token ], currentUser, user, userData, getSetting);
         assert(savedHotbar).equals(setHotbar);
         assert(setHotbar).equals(userData.hotbar);
-        assert(hotbarKey).equals('hotbar.' + token.id);
+        assert(hotbarKey).equals(token.id);
     });
 
     await it("the token is linked to an actor", async () => {
@@ -64,7 +64,7 @@ await describe("The Token Hotbar saves when...", async () => {
         var savedHotbar = await updateHotbar([ token ], currentUser, user, userData, getSetting);
         assert(savedHotbar).equals(setHotbar);
         assert(setHotbar).equals(userData.hotbar);
-        assert(hotbarKey).equals('hotbar.' + actor.id);
+        assert(hotbarKey).equals(actor.id);
     });
 
     await it("the token is not linked to an actor, but we always use the actor", async () => {
@@ -86,7 +86,7 @@ await describe("The Token Hotbar saves when...", async () => {
         var savedHotbar = await updateHotbar([ token ], currentUser, user, userData, getSetting);
         assert(savedHotbar).equals(setHotbar);
         assert(setHotbar).equals(userData.hotbar);
-        assert(hotbarKey).equals('hotbar.' + actor.id);
+        assert(hotbarKey).equals(actor.id);
     });
 });
 
@@ -128,7 +128,7 @@ await describe("Loading the Token Hotbar...", async () => {
             }[k];
         };
         // Sanity check
-        assert(user.getFlag('token-hotbar', 'hotbar.token-1')).equals(tokenHotbar);
+        assert(user.getFlag('token-hotbar', 'token-1')).equals(tokenHotbar);
 
         loadHotbar(user, controlledTokens, getSetting);
         assert(updatedData).equals({ hotbar: tokenHotbar})

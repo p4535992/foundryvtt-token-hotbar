@@ -11,7 +11,6 @@ import {
 import { log } from "./scripts/lib/lib.mjs";
 import { registerSettings, settingKeys } from "./scripts/settings.mjs";
 
-
 // Register settings when the game is properly initialized
 // This is exactly what the 'init' hook is for:
 Hooks.on("init", () => {
@@ -27,9 +26,13 @@ Hooks.once("setup", function () {
 
 Hooks.on("ready", () => {
 	//if (game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar) && !ui.customHotbar) {
-    if(game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar) && 
-		game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active) {
-		warn("Settings use Norc's Custom Hotbar, but Norc's Custom Hotbar is not installed or enabled. Using standard hotbar instead.");
+	if (
+		game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar) &&
+		game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active
+	) {
+		warn(
+			"Settings use Norc's Custom Hotbar, but Norc's Custom Hotbar is not installed or enabled. Using standard hotbar instead."
+		);
 		game.settings.set(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar, false);
 	}
 	saveUserHotbarOnFirstUse(game.user, game.user.hotbar);
@@ -46,21 +49,24 @@ Hooks.on("ready", () => {
 //  - There's no other hooks that contain the hotbar data that we need
 Hooks.on("updateUser", (user, data) => {
 	// Ignore if is hooked the update of the flags
-	if(hasProperty(data.flags,CONSTANTS.MODULE_NAME)){
+	if (hasProperty(data.flags, CONSTANTS.MODULE_NAME)) {
 		return;
 	}
 
 	const controlledTokens = game.canvas.tokens.controlled;
-    // Bug fix: https://github.com/janssen-io/foundry-tokenhotbar-js/issues/8
-    if (!game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.enableHotbarByRole) !== "NONE") {
-        const roleS = game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.enableHotbarByRole);
-        if(!game.user.hasRole(CONST.USER_ROLES[roleS])){
-            if(!game.user.isGM() && game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.enableHotbar)){
-                warn(`You have enabled the Token Hotbar on this client but the GM has activated the module settings 'Enable Token Hotbar by role' to a value not equal to 'none'.`, true);
-            }
-            return;
-        }
-    }
+	// Bug fix: https://github.com/janssen-io/foundry-tokenhotbar-js/issues/8
+	if (!game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.enableHotbarByRole) !== "NONE") {
+		const roleS = game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.enableHotbarByRole);
+		if (!game.user.hasRole(CONST.USER_ROLES[roleS])) {
+			if (!game.user.isGM() && game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.enableHotbar)) {
+				warn(
+					`You have enabled the Token Hotbar on this client but the GM has activated the module settings 'Enable Token Hotbar by role' to a value not equal to 'none'.`,
+					true
+				);
+			}
+			return;
+		}
+	}
 
 	if (!game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.enableHotbar)) {
 		return;

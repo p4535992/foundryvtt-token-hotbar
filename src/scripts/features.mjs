@@ -1,4 +1,3 @@
-
 import CONSTANTS from "./constants.mjs";
 import { debug } from "./lib/lib.mjs";
 import { settingKeys } from "./settings.mjs";
@@ -11,8 +10,8 @@ import { settingKeys } from "./settings.mjs";
 export async function saveUserHotbarOnFirstUse(user, hotbar) {
 	const documentWithHotbar = user;
 	const entity = user;
-	const tokenHotbar = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `hotbar_${entity.id}`);
-    // Bug fix: https://github.com/janssen-io/foundry-tokenhotbar-js/issues/7
+	const tokenHotbar = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `${entity.id}`);
+	// Bug fix: https://github.com/janssen-io/foundry-tokenhotbar-js/issues/7
 	if (!tokenHotbar && !game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active) {
 		await saveHotbar(hotbar, user, user);
 		return true;
@@ -61,8 +60,8 @@ export async function updateHotbar(controlledTokens, currentUser, user, userData
 export async function saveHotbar(hotbarToStore, documentWithHotbar, entity) {
 	debug(`Storing hotbar for ${entity.constructor.name} on document`, { documentWithHotbar, entity, hotbarToStore });
 	// use the token id as we are storing the hotbar of the token
-	await documentWithHotbar.unsetFlag(CONSTANTS.MODULE_NAME, `hotbar_${entity.id}`);
-	await documentWithHotbar.setFlag(CONSTANTS.MODULE_NAME, `hotbar_${entity.id}`, hotbarToStore);
+	await documentWithHotbar.unsetFlag(CONSTANTS.MODULE_NAME, `${entity.id}`);
+	await documentWithHotbar.setFlag(CONSTANTS.MODULE_NAME, `${entity.id}`, hotbarToStore);
 }
 
 /**
@@ -79,7 +78,7 @@ export async function loadHotbar(user, controlledTokens) {
 
 	const documentWithHotbar = user;
 	const entity = determineEntityForHotbar(controlledTokens, user);
-	const hotbarForToken = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `hotbar_${entity.id}`);
+	const hotbarForToken = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `${entity.id}`);
 
 	debug(`Loading Hotbar for ${entity.constructor.name} from document`, {
 		documentWithHotbar,
@@ -88,9 +87,9 @@ export async function loadHotbar(user, controlledTokens) {
 	});
 
 	// Use { recursive: false } to replace the hotbar, instead of merging it.
-    // Bug fix : https://github.com/janssen-io/foundry-tokenhotbar-js/issues/5
+	// Bug fix : https://github.com/janssen-io/foundry-tokenhotbar-js/issues/5
 	// user.update({hotbar: hotbarForToken || {},},{recursive: false,});
-	await user.update({hotbar: hotbarForToken || {},},{ diff: false, recursive: false, noHook: true });
+	await user.update({ hotbar: hotbarForToken || {} }, { diff: false, recursive: false, noHook: true });
 	return true;
 }
 
@@ -104,8 +103,9 @@ function determineEntityForHotbar(controlledTokens, user) {
 		//    OR we always want to link hotbars to (synthetic) actors
 		// Then use the actor to store the hotbar
 		// Otherwise use the token
-		return game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.alwaysUseActor) || 
-			token.document.isLinked ? token.actor : token;
+		return game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.alwaysUseActor) || token.document.isLinked
+			? token.actor
+			: token;
 	}
 }
 
@@ -189,7 +189,7 @@ export function loadCustomHotbar(user, controlledTokens, customHotbar) {
 
 	const documentWithHotbar = user;
 	const entity = determineEntityForHotbar(controlledTokens, user);
-	const hotbarForToken = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `hotbar_${entity.id}`);
+	const hotbarForToken = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `${entity.id}`);
 
 	debug(`Loading Custom Hotbar for ${entity.constructor.name} from document`, {
 		documentWithHotbar,
@@ -204,4 +204,72 @@ export function loadCustomHotbar(user, controlledTokens, customHotbar) {
 	customHotbar.populator.chbSetMacros(hotbarForToken || {}).then(() => (isUpdatingCustomHotbar = false));
 
 	return true;
+}
+
+export function shareHotbar(userId) {
+	if (!userId) {
+		warn(`No userId is been Passed`, true);
+	}
+	const currentUser = game.users.get(userId);
+	const userIds = Array.from(game.users.keys()).filter((id) => id !== currentUser.id);
+	const users = userIds
+		.map((id) => game.users.get(id))
+		.map((u) => {
+			return { id: u.id, name: u.name };
+		});
+
+	// const actorsWithHotbarIds = Object.keys(currentUser.getFlag(CONSTANTS.MODULE_NAME, "hotbar"));
+	const actorsWithHotbarIds = Object.keys(getProperty(currentUser.flags, CONSTANTS.MODULE_NAME));
+	const actors = actorsWithHotbarIds
+		.map((id) => game.actors.get(id))
+		.filter((x) => x)
+		.map((actor) => {
+			return { id: actor.id, name: actor.name };
+		});
+
+	const actorOptions = actors.reduce((acc, e) => (acc += `<option value="${e.id}">${e.name}</option>`), ``);
+	const userOptions = users.reduce((acc, e) => (acc += `<option value="${e.id}">${e.name}</option>`), ``);
+
+	const content = `<form>
+		<div class="form-group">
+			<label>User:</label>
+			<select name="user">${userOptions}</select>
+		</div>
+		<div class="form-group">
+			<label>Actor:</label>
+			<select name="actor">${actorOptions}</select>
+		</div>
+	</form`;
+
+	function shareHotbarCallback(html) {
+		const userId = html.find('[name="user"]')[0].value;
+		const actorId = html.find('[name="actor"]')[0].value;
+		log(" MACRO | ", { userId, actorId });
+
+		const hotbar = currentUser.getFlag("token-hotbar", `${actorId}`);
+		const receivingUser = game.users.get(userId);
+		const regardingActor = game.actors.get(actorId);
+
+		log(" MACRO | ", { hotbar, receivingUser, regardingActor });
+		game.modules.get("token-hotbar").api.saveHotbar(hotbar, receivingUser, regardingActor);
+	}
+
+	let d = new Dialog({
+		title: "Share Hotbar",
+		content: content,
+		buttons: {
+			share: {
+				icon: '<i class="fas fa-check"></i>',
+				label: "Share",
+				callback: shareHotbarCallback,
+			},
+			cancel: {
+				icon: '<i class="fas fa-times"></i>',
+				label: "Cancel",
+			},
+		},
+		default: "cancel",
+	});
+
+	d.render(true);
 }
