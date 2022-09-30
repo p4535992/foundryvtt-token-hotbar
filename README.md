@@ -16,7 +16,7 @@ anyone who has ever written a macro in Foundry.
 All pages of the hotbar will change depending on the token you have selected.
 
 <p align="center">
-<img src="./img/thb-basics.gif" width="500px">
+<img src="./wiki/img/thb-basics.gif" width="500px">
 </p>
 
 ### Use an additional hotbar
@@ -24,7 +24,7 @@ All pages of the hotbar will change depending on the token you have selected.
 Since version [1.3.1](https://github.com/janssen-io/foundry-tokenhotbar-js/releases/v1.3.1), this module supports using [Norc's Custom Hotbar](https://github.com/Norc/foundry-custom-hotbar) to place the Token Hotbar on. You can enable this in the settings.
 
 <p align="center">
-<img src="./img/thb-custom-hotbar.gif" width="500px">
+<img src="./wiki/img/thb-custom-hotbar.gif" width="500px">
 </p>
 
 ### Enable the Token Hotbar per client
@@ -37,7 +37,7 @@ Hotbar's can be shared manually via the provided macro. A GM can run this macro 
 tokens and with which player they want to share the hotbar. You can find this macro in the compendium 'Token Hotbar'.
 
 <p align="center">
-<img src="./img/thb-shared.gif" width="100%" >
+<img src="./wiki/img/thb-shared.gif" width="100%" >
 </p>
 
 ### Settings
