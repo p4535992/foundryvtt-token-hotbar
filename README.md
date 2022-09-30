@@ -152,7 +152,7 @@ npm run-script prettier-format
 npm run-script package
 ```
 
-## [Changelog](./changelog.md)
+## [Changelog](./CHANGELOG.md)
 
 ## Issues
 
