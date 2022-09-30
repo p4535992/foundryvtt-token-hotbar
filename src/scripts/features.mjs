@@ -89,13 +89,13 @@ export function loadHotbar(user, controlledTokens, getSetting) {
 
 	// Use { recursive: false } to replace the hotbar, instead of merging it.
 	user.update(
-        {
-            hotbar: hotbarForToken || {}
-        },
-        {
-            recursive: false
-        }
-    );
+		{
+			hotbar: hotbarForToken || {},
+		},
+		{
+			recursive: false,
+		}
+	);
 	return true;
 }
 
