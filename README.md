@@ -16,8 +16,9 @@
 
 This module provides a unique hotbar for every token. If the token is linked to an actor (for player characters), then all tokens of that actor will have the same hotbar.
 
-It's slimmed down to make maintenance easier and hopefully the code is easier to understand for
-anyone who has ever written a macro in Foundry.
+It's slimmed down to make maintenance easier and hopefully the code is easier to understand for anyone who has ever written a macro in Foundry.
+
+This is a follow up of the job done from [janssen](https://github.com/janssen-io) on the module [foundry-tokenhotbar-js](https://github.com/janssen-io/foundry-tokenhotbar-js) forked from the original league repository.
 
 ## Known issue/Limitation
 
@@ -165,7 +166,7 @@ This package is under an [MIT license](LICENSE) and the [Foundry Virtual Tableto
 
 Thanks to anyone who helps me with this code! I appreciate the user community's feedback on this project!
 
-A very big thanks to [janssen](https://github.com/fvtt.janssen.io), for update this module for 0.8.9 and make it work for 9.
+A very big thanks to [janssen](https://github.com/janssen-io), for update this module for 0.8.9 and make it work for 9 [foundry-tokenhotbar-js](https://github.com/janssen-io/foundry-tokenhotbar-js).
 
 ## Acknowledgements
 
