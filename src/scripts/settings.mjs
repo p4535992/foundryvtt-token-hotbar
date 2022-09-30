@@ -9,7 +9,7 @@ export const settingKeys = {
     enableHotbarByRole: "enableHotbarByRole",
 };
 
-export const registerSettings = function () {
+export const registerSettings = function (hasCustomHotbar) {
 	game.settings.register(CONSTANTS.MODULE_NAME, settingKeys.alwaysUseActor, {
 		name: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.alwaysUseActor}.name`,
 		hint: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.alwaysUseActor}.hint`,
@@ -82,7 +82,3 @@ export const registerSettings = function () {
 
 	log("Module Settings registered.");
 };
-
-export function getModuleSettings(settings) {
-	return (settingKey) => settings.get(CONSTANTS.MODULE_NAME, settingKey);
-}

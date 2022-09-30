@@ -9,13 +9,15 @@ import {
 	saveUserHotbarOnFirstUse,
 } from "./scripts/features.mjs";
 import { log } from "./scripts/lib/lib.mjs";
-import { registerModuleSettings, getModuleSettings, settingKeys } from "./scripts/settings.mjs";
+import { registerSettings, settingKeys } from "./scripts/settings.mjs";
+
 
 // Register settings when the game is properly initialized
 // This is exactly what the 'init' hook is for:
 Hooks.on("init", () => {
-	const hasCustomHotbar = !!game.modules.get("custom-hotbar");
-	registerModuleSettings(game.settings, hasCustomHotbar);
+	const hasCustomHotbar = game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active;
+	// registerSettings(game.settings, hasCustomHotbar);
+	registerSettings(hasCustomHotbar);
 	log("Module Initialized!");
 });
 
@@ -24,14 +26,13 @@ Hooks.once("setup", function () {
 });
 
 Hooks.on("ready", () => {
-	const getSetting = getModuleSettings(game.settings);
-	//if (getSetting(settingKeys.useCustomHotbar) && !ui.customHotbar) {
-    if(getSetting(settingKeys.useCustomHotbar) && game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active) {
+	//if (game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar) && !ui.customHotbar) {
+    if(game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar) && 
+		game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active) {
 		warn("Settings use Norc's Custom Hotbar, but Norc's Custom Hotbar is not installed or enabled. Using standard hotbar instead.");
 		game.settings.set(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar, false);
 	}
-    const hotbarFlag = game.user.getFlag(CONSTANTS.MODULE_NAME, "hotbar");
-	saveUserHotbarOnFirstUse(game.user, hotbarFlag);
+	saveUserHotbarOnFirstUse(game.user, game.user.hotbar);
 });
 
 // Let's save the hotbar whenever
@@ -44,27 +45,31 @@ Hooks.on("ready", () => {
 //  - It's sent to other clients
 //  - There's no other hooks that contain the hotbar data that we need
 Hooks.on("updateUser", (user, data) => {
+	// Ignore if is hooked the update of the flags
+	if(hasProperty(data.flags,CONSTANTS.MODULE_NAME)){
+		return;
+	}
+
 	const controlledTokens = game.canvas.tokens.controlled;
-	const getSetting = getModuleSettings(game.settings);
     // Bug fix: https://github.com/janssen-io/foundry-tokenhotbar-js/issues/8
-    if (!getSetting(settingKeys.enableHotbarByRole) !== "NONE") {
-        const roleS = getSetting(settingKeys.enableHotbarByRole);
+    if (!game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.enableHotbarByRole) !== "NONE") {
+        const roleS = game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.enableHotbarByRole);
         if(!game.user.hasRole(CONST.USER_ROLES[roleS])){
-            if(!game.user.isGM() && getSetting(settingKeys.enableHotbar)){
+            if(!game.user.isGM() && game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.enableHotbar)){
                 warn(`You have enabled the Token Hotbar on this client but the GM has activated the module settings 'Enable Token Hotbar by role' to a value not equal to 'none'.`, true);
             }
             return;
         }
     }
 
-	if (!getSetting(settingKeys.enableHotbar)) {
+	if (!game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.enableHotbar)) {
 		return;
 	}
 
-	if (getSetting(settingKeys.useCustomHotbar) && ui.customHotbar) {
-		updateCustomHotbar(controlledTokens, game.user, user, data, getSetting, ui.customHotbar);
+	if (game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar) && ui.customHotbar) {
+		updateCustomHotbar(controlledTokens, game.user, user, data, ui.customHotbar);
 	} else {
-		updateHotbar(controlledTokens, game.user, user, data, getSetting);
+		updateHotbar(controlledTokens, game.user, user, data);
 	}
 });
 
@@ -79,8 +84,7 @@ Hooks.on("updateUser", (user, data) => {
 
 let controlTokenTimeout;
 Hooks.on("controlToken", (object, isControlled) => {
-	const getSetting = getModuleSettings(game.settings);
-	if (!getSetting(settingKeys.enableHotbar)) {
+	if (!game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.enableHotbar)) {
 		return;
 	}
 
@@ -91,10 +95,10 @@ Hooks.on("controlToken", (object, isControlled) => {
 	controlTokenTimeout = window.setTimeout(async () => {
 		const controlledTokens = game.canvas.tokens.controlled;
 
-		if (getSetting(settingKeys.useCustomHotbar) && ui.customHotbar) {
-			loadCustomHotbar(game.user, controlledTokens, getSetting, ui.customHotbar);
+		if (game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar) && ui.customHotbar) {
+			loadCustomHotbar(game.user, controlledTokens, ui.customHotbar);
 		} else {
-			if (await loadHotbar(game.user, controlledTokens, getSetting)) {
+			if (await loadHotbar(game.user, controlledTokens)) {
 				// Only re-render the hotbar, if it actually changed because of us
 				ui.hotbar.render();
 			}

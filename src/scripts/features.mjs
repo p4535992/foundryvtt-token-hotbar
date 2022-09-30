@@ -11,7 +11,7 @@ import { settingKeys } from "./settings.mjs";
 export async function saveUserHotbarOnFirstUse(user, hotbar) {
 	const documentWithHotbar = user;
 	const entity = user;
-	const tokenHotbar = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `hotbar.${entity.id}`);
+	const tokenHotbar = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `hotbar_${entity.id}`);
     // Bug fix: https://github.com/janssen-io/foundry-tokenhotbar-js/issues/7
 	if (!tokenHotbar && !game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active) {
 		await saveHotbar(hotbar, user, user);
@@ -26,14 +26,12 @@ export async function saveUserHotbarOnFirstUse(user, hotbar) {
  * @param {{ id: string, actor: { id: string }, document: object }[]} controlledTokens
  * @param {{id: string, unsetFlag: function, setFlag: function}} currentUser
  * @param {{id: string, unsetFlag: function, setFlag: function}} user
- * @param {{hotbar: {}}} hotbarData
- * @param {function} getSetting
+ * @param {{hotbar: {}}} userData
  * @returns the saved Token Hotbar object
  */
-export async function updateHotbar(controlledTokens, currentUser, user, hotbarData, getSetting) {
-    const hotbarFlags = getProperty(hotbarData.flags, `${CONSTANTS.MODULE_NAME}`);
-	if (!hotbarFlags.hotbar) {
-		debug("User updated, but no new hotbar data present.", hotbarData);
+export async function updateHotbar(controlledTokens, currentUser, user, userData) {
+	if (!userData.hotbar) {
+		debug("User updated, but no new hotbar data present.", userData);
 		return;
 	}
 
@@ -47,10 +45,10 @@ export async function updateHotbar(controlledTokens, currentUser, user, hotbarDa
 		return;
 	}
 
-	const entity = determineEntityForHotbar(controlledTokens, user, getSetting);
+	const entity = determineEntityForHotbar(controlledTokens, user);
 	const documentWithHotbar = user;
-	await saveHotbar(hotbarFlags.hotbar, documentWithHotbar, entity);
-	return hotbarFlags.hotbar;
+	await saveHotbar(userData.hotbar, documentWithHotbar, entity);
+	return userData.hotbar;
 }
 
 /**
@@ -63,26 +61,25 @@ export async function updateHotbar(controlledTokens, currentUser, user, hotbarDa
 export async function saveHotbar(hotbarToStore, documentWithHotbar, entity) {
 	debug(`Storing hotbar for ${entity.constructor.name} on document`, { documentWithHotbar, entity, hotbarToStore });
 	// use the token id as we are storing the hotbar of the token
-	await documentWithHotbar.unsetFlag(CONSTANTS.MODULE_NAME, `hotbar.${entity.id}`);
-	await documentWithHotbar.setFlag(CONSTANTS.MODULE_NAME, `hotbar.${entity.id}`, hotbarToStore);
+	await documentWithHotbar.unsetFlag(CONSTANTS.MODULE_NAME, `hotbar_${entity.id}`);
+	await documentWithHotbar.setFlag(CONSTANTS.MODULE_NAME, `hotbar_${entity.id}`, hotbarToStore);
 }
 
 /**
  *
  * @param {{ id: string, actor: { id: string }, document: object }[]} controlledTokens
  * @param {{id: string, getFlag: function, data: { update: function }}} user
- * @param {function} getSetting
  * @returns True, if hotbar has been loaded.
  */
-export async function loadHotbar(user, controlledTokens, getSetting) {
+export async function loadHotbar(user, controlledTokens) {
 	if (controlledTokens.length > 1) {
 		debug("Not loading any hotbar, more than one token selected.", controlledTokens);
 		return false;
 	}
 
 	const documentWithHotbar = user;
-	const entity = determineEntityForHotbar(controlledTokens, user, getSetting);
-	const hotbarForToken = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `hotbar.${entity.id}`);
+	const entity = determineEntityForHotbar(controlledTokens, user);
+	const hotbarForToken = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `hotbar_${entity.id}`);
 
 	debug(`Loading Hotbar for ${entity.constructor.name} from document`, {
 		documentWithHotbar,
@@ -93,11 +90,11 @@ export async function loadHotbar(user, controlledTokens, getSetting) {
 	// Use { recursive: false } to replace the hotbar, instead of merging it.
     // Bug fix : https://github.com/janssen-io/foundry-tokenhotbar-js/issues/5
 	// user.update({hotbar: hotbarForToken || {},},{recursive: false,});
-    await user.setFlag(CONSTANTS.MODULE_NAME, "hotbar", hotbarForToken || {});
+	await user.update({hotbar: hotbarForToken || {},},{ diff: false, recursive: false, noHook: true });
 	return true;
 }
 
-function determineEntityForHotbar(controlledTokens, user, getSetting) {
+function determineEntityForHotbar(controlledTokens, user) {
 	if (controlledTokens.length === 0) {
 		// use the user id as we are storing the hotbar of the user
 		return user;
@@ -107,7 +104,8 @@ function determineEntityForHotbar(controlledTokens, user, getSetting) {
 		//    OR we always want to link hotbars to (synthetic) actors
 		// Then use the actor to store the hotbar
 		// Otherwise use the token
-		return getSetting(settingKeys.alwaysUseActor) || token.document.isLinked ? token.actor : token;
+		return game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.alwaysUseActor) || 
+			token.document.isLinked ? token.actor : token;
 	}
 }
 
@@ -117,14 +115,13 @@ let isUpdatingCustomHotbar = false;
  * @param {{ id: string, actor: { id: string }, document: object }[]} controlledTokens
  * @param {{id: string, unsetFlag: function, setFlag: function}} currentUser
  * @param {{id: string, unsetFlag: function, setFlag: function}} user
- * @param {{flags: { customHotbar: {}}}} hotbarData
- * @param {function} getSetting
+ * @param {{flags: { customHotbar: {}}}} userData
  * @param {{getCustomHotbarMacros: function}} customHotbar
  * @returns the saved Token Hotbar object
  */
-export async function updateCustomHotbar(controlledTokens, currentUser, user, hotbarData, getSetting, customHotbar) {
-	if (!hotbarData.flags["custom-hotbar"]) {
-		debug("User updated, but no new custom hotbar data present.", hotbarData);
+export async function updateCustomHotbar(controlledTokens, currentUser, user, userData, customHotbar) {
+	if (!userData.flags[CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME]) {
+		debug("User updated, but no new custom hotbar data present.", userData);
 		return;
 	}
 
@@ -153,7 +150,7 @@ export async function updateCustomHotbar(controlledTokens, currentUser, user, ho
 		const macrosPerPage = pages.map((page) => customHotbar.getCustomHotbarMacros(page));
 
 		// macrosPerPage => [ [ { slot: number, macro: Macro } ] ]
-		const hotbarData = macrosPerPage
+		const userData = macrosPerPage
 			// => [ { slot: number, macro: Macro } ]
 			.flat()
 			// => { [number]: string }
@@ -162,10 +159,10 @@ export async function updateCustomHotbar(controlledTokens, currentUser, user, ho
 				return prev;
 			}, {});
 
-		return hotbarData;
+		return userData;
 	}
 
-	const entity = determineEntityForHotbar(controlledTokens, user, getSetting);
+	const entity = determineEntityForHotbar(controlledTokens, user);
 	const documentWithHotbar = user;
 	const newHotbar = getCustomHotbar();
 	debug("Saving Custom Hotbar");
@@ -177,11 +174,10 @@ export async function updateCustomHotbar(controlledTokens, currentUser, user, ho
  *
  * @param {{ id: string, actor: { id: string }, document: object }[]} controlledTokens
  * @param {{id: string, getFlag: function, setFlag: function, unsetFlag: function}} user
- * @param {function} getSetting
- * @param { { populator: { chbSetMacros: function } } } getSetting
+ * @param { { populator: { chbSetMacros: function } } }
  * @returns True, if hotbar has been loaded.
  */
-export function loadCustomHotbar(user, controlledTokens, getSetting, customHotbar) {
+export function loadCustomHotbar(user, controlledTokens, customHotbar) {
 	if (controlledTokens.length > 1) {
 		debug("Not loading any hotbar, more than one token selected.", controlledTokens);
 		return false;
@@ -192,8 +188,8 @@ export function loadCustomHotbar(user, controlledTokens, getSetting, customHotba
 	}
 
 	const documentWithHotbar = user;
-	const entity = determineEntityForHotbar(controlledTokens, user, getSetting);
-	const hotbarForToken = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `hotbar.${entity.id}`);
+	const entity = determineEntityForHotbar(controlledTokens, user);
+	const hotbarForToken = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `hotbar_${entity.id}`);
 
 	debug(`Loading Custom Hotbar for ${entity.constructor.name} from document`, {
 		documentWithHotbar,

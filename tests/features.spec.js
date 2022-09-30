@@ -33,15 +33,15 @@ await describe("The Token Hotbar saves when...", async () => {
             setFlag: (scope, key, value) => { setHotbar = value; hotbarKey = key; },
             unsetFlag: () => {},
         };
-        const hotbarData = { hotbar: { 1: { slot: 1, macro: { id: 2 } } } };
+        const userData = { hotbar: { 1: { slot: 1, macro: { id: 2 } } } };
         const getSetting = k => {
             return {
                 [settingKeys.alwaysUseActor]: false
             }[k];
         };
-        var savedHotbar = await updateHotbar([ token ], currentUser, user, hotbarData, getSetting);
+        var savedHotbar = await updateHotbar([ token ], currentUser, user, userData, getSetting);
         assert(savedHotbar).equals(setHotbar);
-        assert(setHotbar).equals(hotbarData.hotbar);
+        assert(setHotbar).equals(userData.hotbar);
         assert(hotbarKey).equals('hotbar.' + token.id);
     });
 
@@ -55,15 +55,15 @@ await describe("The Token Hotbar saves when...", async () => {
             setFlag: (scope, key, value) => { setHotbar = value; hotbarKey = key; },
             unsetFlag: () => {},
         };
-        const hotbarData = { hotbar: { 1: { slot: 1, macro: { id: 2 } } } };
+        const userData = { hotbar: { 1: { slot: 1, macro: { id: 2 } } } };
         const getSetting = k => {
             return {
                 [settingKeys.alwaysUseActor]: false
             }[k];
         };
-        var savedHotbar = await updateHotbar([ token ], currentUser, user, hotbarData, getSetting);
+        var savedHotbar = await updateHotbar([ token ], currentUser, user, userData, getSetting);
         assert(savedHotbar).equals(setHotbar);
-        assert(setHotbar).equals(hotbarData.hotbar);
+        assert(setHotbar).equals(userData.hotbar);
         assert(hotbarKey).equals('hotbar.' + actor.id);
     });
 
@@ -77,15 +77,15 @@ await describe("The Token Hotbar saves when...", async () => {
             setFlag: (scope, key, value) => { setHotbar = value; hotbarKey = key; },
             unsetFlag: () => {},
         };
-        const hotbarData = { hotbar: { 1: { slot: 1, macro: { id: 2 } } } };
+        const userData = { hotbar: { 1: { slot: 1, macro: { id: 2 } } } };
         const getSetting = k => {
             return {
                 [settingKeys.alwaysUseActor]: true // Vital for this test
             }[k];
         };
-        var savedHotbar = await updateHotbar([ token ], currentUser, user, hotbarData, getSetting);
+        var savedHotbar = await updateHotbar([ token ], currentUser, user, userData, getSetting);
         assert(savedHotbar).equals(setHotbar);
-        assert(setHotbar).equals(hotbarData.hotbar);
+        assert(setHotbar).equals(userData.hotbar);
         assert(hotbarKey).equals('hotbar.' + actor.id);
     });
 });
