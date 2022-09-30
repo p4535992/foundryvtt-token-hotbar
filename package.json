@@ -1,48 +1,13 @@
 {
-  "name": "tokenhotbar",
-  "version": "3.0.0",
-  "description": "Foundry VTT module to dynamically switch hotbars based on the selected token.",
-  "main": "TokenHotbar.js",
-  "directories": {
-    "test": "spec"
-  },
-  "dependencies": {
-    "foundry-pc-types": "^0.1.0",
-    "hard-source-webpack-plugin": "^0.13.1",
-    "ts-loader": "^7.0.5",
-    "typescript": "^3.9.5",
-    "webpack": "^4.43.0"
-  },
-  "devDependencies": {
-    "@types/jasmine": "^3.5.10",
-    "@typescript-eslint/eslint-plugin": "^3.3.0",
-    "@typescript-eslint/parser": "^3.3.0",
-    "eslint": "^7.2.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.21.2",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "jasmine": "^3.5.0",
-    "jasmine-spec-reporter": "^5.0.2",
-    "ts-node": "^8.10.2",
-    "webpack-cli": "^3.3.12",
-    "webpack-merge": "^4.2.2"
-  },
+  "name": "token-hotbar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "type": "module",
   "scripts": {
-    "test": "ts-node node_modules/jasmine/bin/jasmine",
-    "dev": "npx webpack --config webpack.dev.js",
-    "watch": "npx webpack --config webpack.dev.js --watch --progress",
-    "prod": "npx webpack --config webpack.prod.js"
+    "test": "node src/*.spec.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/janssen-io/foundry-token-hotbar.git"
-  },
-  "author": "Stan Janssen",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/janssen-io/foundry-token-hotbar/issues"
-  },
-  "homepage": "https://github.com/janssen-io/foundry-token-hotbar#readme"
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
