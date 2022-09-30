@@ -1,4 +1,5 @@
-import { CONSTANTS } from "./constants.mjs";
+
+import CONSTANTS from "./constants.mjs";
 import { debug } from "./lib/lib.mjs";
 import { settingKeys } from "./settings.mjs";
 
@@ -11,7 +12,8 @@ export async function saveUserHotbarOnFirstUse(user, hotbar) {
 	const documentWithHotbar = user;
 	const entity = user;
 	const tokenHotbar = documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `hotbar.${entity.id}`);
-	if (!tokenHotbar) {
+    // Bug fix: https://github.com/janssen-io/foundry-tokenhotbar-js/issues/7
+	if (!tokenHotbar && !game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active) {
 		await saveHotbar(hotbar, user, user);
 		return true;
 	}
@@ -29,7 +31,8 @@ export async function saveUserHotbarOnFirstUse(user, hotbar) {
  * @returns the saved Token Hotbar object
  */
 export async function updateHotbar(controlledTokens, currentUser, user, hotbarData, getSetting) {
-	if (!hotbarData.hotbar) {
+    const hotbarFlags = getProperty(hotbarData.flags, `${CONSTANTS.MODULE_NAME}`);
+	if (!hotbarFlags.hotbar) {
 		debug("User updated, but no new hotbar data present.", hotbarData);
 		return;
 	}
@@ -46,8 +49,8 @@ export async function updateHotbar(controlledTokens, currentUser, user, hotbarDa
 
 	const entity = determineEntityForHotbar(controlledTokens, user, getSetting);
 	const documentWithHotbar = user;
-	await saveHotbar(hotbarData.hotbar, documentWithHotbar, entity);
-	return hotbarData.hotbar;
+	await saveHotbar(hotbarFlags.hotbar, documentWithHotbar, entity);
+	return hotbarFlags.hotbar;
 }
 
 /**
@@ -71,7 +74,7 @@ export async function saveHotbar(hotbarToStore, documentWithHotbar, entity) {
  * @param {function} getSetting
  * @returns True, if hotbar has been loaded.
  */
-export function loadHotbar(user, controlledTokens, getSetting) {
+export async function loadHotbar(user, controlledTokens, getSetting) {
 	if (controlledTokens.length > 1) {
 		debug("Not loading any hotbar, more than one token selected.", controlledTokens);
 		return false;
@@ -88,14 +91,9 @@ export function loadHotbar(user, controlledTokens, getSetting) {
 	});
 
 	// Use { recursive: false } to replace the hotbar, instead of merging it.
-	user.update(
-		{
-			hotbar: hotbarForToken || {},
-		},
-		{
-			recursive: false,
-		}
-	);
+    // Bug fix : https://github.com/janssen-io/foundry-tokenhotbar-js/issues/5
+	// user.update({hotbar: hotbarForToken || {},},{recursive: false,});
+    await user.setFlag(CONSTANTS.MODULE_NAME, "hotbar", hotbarForToken || {});
 	return true;
 }
 

@@ -68,7 +68,7 @@ tokens and with which player they want to share the hotbar. You can find this ma
 ## Settings
 
 * **Always link to actor:** link the hotbar to the actor, even if the token itself is not linked.
-* **Use Custom Hotbar:** Place the Token Hotbar on [Norc's Custom Hotbar](https://github.com/Norc/foundry-custom-hotbar), instead of the original hotbar.
+* **Use Norc's Custom Hotbar:** Place the Token Hotbar on [Norc's Custom Hotbar](https://github.com/Norc/foundry-custom-hotbar), instead of the original hotbar.
 * **Debug Mode:** Show detailed messages in the console (F12).
 
 ## API

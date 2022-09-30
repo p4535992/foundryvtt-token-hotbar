@@ -6,6 +6,7 @@ export const settingKeys = {
 	debugMode: "debugMode",
 	useCustomHotbar: "useCustomHotbar",
 	enableHotbar: "enableHotbar",
+    enableHotbarByRole: "enableHotbarByRole",
 };
 
 export const registerSettings = function () {
@@ -50,9 +51,25 @@ export const registerSettings = function () {
 		hint: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.enableHotbar}.hint`,
 		scope: "client",
 		config: true,
-		default: true,
+		default: false,
 		type: Boolean,
 	});
+
+    game.settings.register(CONSTANTS.MODULE_NAME, settingKeys.enableHotbarByRole, {
+		name: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.enableHotbarByRole}.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.enableHotbarByRole}.hint`,
+        scope: 'world',
+        type: String,
+        choices: {
+            "NONE" : "None",
+            "PLAYER" : "Player",
+            "TRUSTED" : "Trusted",
+            "ASSISTANT" : "Assistant",
+            "GAMEMASTER" : "GameMaster"
+        },
+        default: "NONE",
+        config: true,
+    });
 
 	game.settings.register(CONSTANTS.MODULE_NAME, "debug", {
 		name: `${CONSTANTS.MODULE_NAME}.settings.debug.name`,

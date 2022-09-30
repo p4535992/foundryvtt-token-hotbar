@@ -1,5 +1,5 @@
 import API from "./scripts/api.mjs";
-import { CONSTANTS } from "./scripts/constants.mjs";
+import CONSTANTS from "./scripts/constants.mjs";
 import {
 	saveHotbar,
 	updateHotbar,
@@ -25,12 +25,13 @@ Hooks.once("setup", function () {
 
 Hooks.on("ready", () => {
 	const getSetting = getModuleSettings(game.settings);
-	if (getSetting(settingKeys.useCustomHotbar) && !ui.customHotbar) {
-		warn("Settings use Custom Hotbar, but Custom Hotbar is installed or enabled. Using standard hotbar instead.");
+	//if (getSetting(settingKeys.useCustomHotbar) && !ui.customHotbar) {
+    if(getSetting(settingKeys.useCustomHotbar) && game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active) {
+		warn("Settings use Norc's Custom Hotbar, but Norc's Custom Hotbar is not installed or enabled. Using standard hotbar instead.");
 		game.settings.set(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar, false);
 	}
-
-	saveUserHotbarOnFirstUse(game.user, game.user.hotbar);
+    const hotbarFlag = game.user.getFlag(CONSTANTS.MODULE_NAME, "hotbar");
+	saveUserHotbarOnFirstUse(game.user, hotbarFlag);
 });
 
 // Let's save the hotbar whenever
@@ -45,6 +46,16 @@ Hooks.on("ready", () => {
 Hooks.on("updateUser", (user, data) => {
 	const controlledTokens = game.canvas.tokens.controlled;
 	const getSetting = getModuleSettings(game.settings);
+    // Bug fix: https://github.com/janssen-io/foundry-tokenhotbar-js/issues/8
+    if (!getSetting(settingKeys.enableHotbarByRole) !== "NONE") {
+        const roleS = getSetting(settingKeys.enableHotbarByRole);
+        if(!game.user.hasRole(CONST.USER_ROLES[roleS])){
+            if(!game.user.isGM() && getSetting(settingKeys.enableHotbar)){
+                warn(`You have enabled the Token Hotbar on this client but the GM has activated the module settings 'Enable Token Hotbar by role' to a value not equal to 'none'.`, true);
+            }
+            return;
+        }
+    }
 
 	if (!getSetting(settingKeys.enableHotbar)) {
 		return;
@@ -77,13 +88,13 @@ Hooks.on("controlToken", (object, isControlled) => {
 		window.clearTimeout(controlTokenTimeout);
 	}
 
-	controlTokenTimeout = window.setTimeout(() => {
+	controlTokenTimeout = window.setTimeout(async () => {
 		const controlledTokens = game.canvas.tokens.controlled;
 
 		if (getSetting(settingKeys.useCustomHotbar) && ui.customHotbar) {
 			loadCustomHotbar(game.user, controlledTokens, getSetting, ui.customHotbar);
 		} else {
-			if (loadHotbar(game.user, controlledTokens, getSetting)) {
+			if (await loadHotbar(game.user, controlledTokens, getSetting)) {
 				// Only re-render the hotbar, if it actually changed because of us
 				ui.hotbar.render();
 			}
