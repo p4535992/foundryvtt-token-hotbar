@@ -1,4 +1,5 @@
-import { TH, log, debug } from "./constants.mjs";
+import CONSTANTS from "./constants.mjs";
+import { log } from "./lib/lib.mjs";
 
 export const settingKeys = {
 	alwaysUseActor: "alwaysUseActor",
@@ -8,18 +9,18 @@ export const settingKeys = {
 };
 
 export const registerSettings = function () {
-	game.settings.register(TH.name, settingKeys.alwaysUseActor, {
-		name: `${TH.name}.settings.${settingKeys.alwaysUseActor}.name`,
-		hint: `${TH.name}.settings.${settingKeys.alwaysUseActor}.hint`,
+	game.settings.register(CONSTANTS.MODULE_NAME, settingKeys.alwaysUseActor, {
+		name: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.alwaysUseActor}.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.alwaysUseActor}.hint`,
 		scope: "world",
 		config: true,
 		default: true,
 		type: Boolean,
 	});
 
-	game.settings.register(TH.name, settingKeys.debugMode, {
-		name: `${TH.name}.settings.${settingKeys.debugMode}.name`,
-		hint: `${TH.name}.settings.${settingKeys.debugMode}.hint`,
+	game.settings.register(CONSTANTS.MODULE_NAME, settingKeys.debugMode, {
+		name: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.debugMode}.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.debugMode}.hint`,
 		scope: "client",
 		config: true,
 		default: false,
@@ -28,9 +29,9 @@ export const registerSettings = function () {
 	});
 
 	log("Has Custom Hotbar?", hasCustomHotbar);
-	game.settings.register(TH.name, settingKeys.useCustomHotbar, {
-		name: `${TH.name}.settings.${settingKeys.useCustomHotbar}.name`,
-		hint: `${TH.name}.settings.${settingKeys.useCustomHotbar}.hint`,
+	game.settings.register(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar, {
+		name: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.useCustomHotbar}.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.useCustomHotbar}.hint`,
 		scope: "client",
 		config: hasCustomHotbar, // only show the setting if Custom Hotbar is enabled
 		default: false,
@@ -39,17 +40,26 @@ export const registerSettings = function () {
 			// if the setting is somehow set to true, but Custom Hotbar is not enabled
 			// then set the setting to false again
 			if (useCustomHotbar && !hasCustomHotbar) {
-				settings.set(TH.name, settingKeys.useCustomHotbar, false);
+				settings.set(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar, false);
 			}
 		},
 	});
 
-	game.settings.register(TH.name, settingKeys.enableHotbar, {
-		name: `${TH.name}.settings.${settingKeys.enableHotbar}.name`,
-		hint: `${TH.name}.settings.${settingKeys.enableHotbar}.hint`,
+	game.settings.register(CONSTANTS.MODULE_NAME, settingKeys.enableHotbar, {
+		name: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.enableHotbar}.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.enableHotbar}.hint`,
 		scope: "client",
 		config: true,
 		default: true,
+		type: Boolean,
+	});
+
+	game.settings.register(CONSTANTS.MODULE_NAME, "debug", {
+		name: `${CONSTANTS.MODULE_NAME}.settings.debug.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.settings.debug.hint`,
+		scope: "client",
+		config: true,
+		default: false,
 		type: Boolean,
 	});
 
@@ -57,5 +67,5 @@ export const registerSettings = function () {
 };
 
 export function getModuleSettings(settings) {
-	return (settingKey) => settings.get(TH.name, settingKey);
+	return (settingKey) => settings.get(CONSTANTS.MODULE_NAME, settingKey);
 }

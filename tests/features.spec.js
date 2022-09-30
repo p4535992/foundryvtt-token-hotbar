@@ -4,7 +4,7 @@ import { saveUserHotbarOnFirstUse } from "./features.mjs";
 import { updateHotbar, loadHotbar } from "./features.mjs";
 import { settingKeys } from "./settings.mjs";
 
-TH.debug.logs = false;
+// TH.debug.logs = false;
 
 await describe("The Token Hotbar does not save when...", async () => {
     await it("multiple tokens are selected", async () => {
@@ -33,15 +33,15 @@ await describe("The Token Hotbar saves when...", async () => {
             setFlag: (scope, key, value) => { setHotbar = value; hotbarKey = key; },
             unsetFlag: () => {},
         };
-        const data = { hotbar: { 1: { slot: 1, macro: { id: 2 } } } };
+        const hotbarData = { hotbar: { 1: { slot: 1, macro: { id: 2 } } } };
         const getSetting = k => {
             return {
                 [settingKeys.alwaysUseActor]: false
             }[k];
         };
-        var savedHotbar = await updateHotbar([ token ], currentUser, user, data, getSetting);
+        var savedHotbar = await updateHotbar([ token ], currentUser, user, hotbarData, getSetting);
         assert(savedHotbar).equals(setHotbar);
-        assert(setHotbar).equals(data.hotbar);
+        assert(setHotbar).equals(hotbarData.hotbar);
         assert(hotbarKey).equals('hotbar.' + token.id);
     });
 
@@ -55,15 +55,15 @@ await describe("The Token Hotbar saves when...", async () => {
             setFlag: (scope, key, value) => { setHotbar = value; hotbarKey = key; },
             unsetFlag: () => {},
         };
-        const data = { hotbar: { 1: { slot: 1, macro: { id: 2 } } } };
+        const hotbarData = { hotbar: { 1: { slot: 1, macro: { id: 2 } } } };
         const getSetting = k => {
             return {
                 [settingKeys.alwaysUseActor]: false
             }[k];
         };
-        var savedHotbar = await updateHotbar([ token ], currentUser, user, data, getSetting);
+        var savedHotbar = await updateHotbar([ token ], currentUser, user, hotbarData, getSetting);
         assert(savedHotbar).equals(setHotbar);
-        assert(setHotbar).equals(data.hotbar);
+        assert(setHotbar).equals(hotbarData.hotbar);
         assert(hotbarKey).equals('hotbar.' + actor.id);
     });
 
@@ -77,15 +77,15 @@ await describe("The Token Hotbar saves when...", async () => {
             setFlag: (scope, key, value) => { setHotbar = value; hotbarKey = key; },
             unsetFlag: () => {},
         };
-        const data = { hotbar: { 1: { slot: 1, macro: { id: 2 } } } };
+        const hotbarData = { hotbar: { 1: { slot: 1, macro: { id: 2 } } } };
         const getSetting = k => {
             return {
                 [settingKeys.alwaysUseActor]: true // Vital for this test
             }[k];
         };
-        var savedHotbar = await updateHotbar([ token ], currentUser, user, data, getSetting);
+        var savedHotbar = await updateHotbar([ token ], currentUser, user, hotbarData, getSetting);
         assert(savedHotbar).equals(setHotbar);
-        assert(setHotbar).equals(data.hotbar);
+        assert(setHotbar).equals(hotbarData.hotbar);
         assert(hotbarKey).equals('hotbar.' + actor.id);
     });
 });
@@ -103,7 +103,7 @@ await describe("Loading the Token Hotbar...", async () => {
             // however, this does not work in plain js :(
             var keys = key.split('.');
             var flags = {
-                [TH.name]: {
+                [CONSTANTS.MODULE_NAME]: {
                     hotbar: {
                         'token-1': tokenHotbar,
                     }
@@ -146,7 +146,7 @@ await describe("Loading the Token Hotbar...", async () => {
             // however, this does not work in plain js :(
             var keys = key.split('.');
             var flags = {
-                [TH.name]: {
+                [CONSTANTS.MODULE_NAME]: {
                     hotbar: {
                         'actor-1': tokenHotbar,
                     }
@@ -189,7 +189,7 @@ await describe("The Token Hotbar is not loaded when...", async () => {
             // however, this does not work in plain js :(
             var keys = key.split('.');
             var flags = {
-                [TH.name]: {
+                [CONSTANTS.MODULE_NAME]: {
                     hotbar: {
                         'token-1': tokenHotbar,
                     }
@@ -227,7 +227,7 @@ await describe("On initialization the user's hotbar is...", async () => {
             // however, this does not work in plain js :(
             var keys = key.split('.');
             var flags = {
-                [TH.name]: {
+                [CONSTANTS.MODULE_NAME]: {
                     hotbar: {
                         'user-1': tokenHotbar,
                     }
@@ -258,7 +258,7 @@ await describe("On initialization the user's hotbar is...", async () => {
             // however, this does not work in plain js :(
             var keys = key.split('.');
             var flags = {
-                [TH.name]: {
+                [CONSTANTS.MODULE_NAME]: {
                     hotbar: {
                         'user-1': setHotbar,
                     }

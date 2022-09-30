@@ -1,4 +1,5 @@
-import { TH, log, warn } from "./src/constants.mjs";
+import API from "./scripts/api.mjs";
+import { CONSTANTS } from "./scripts/constants.mjs";
 import {
 	saveHotbar,
 	updateHotbar,
@@ -6,8 +7,9 @@ import {
 	updateCustomHotbar,
 	loadCustomHotbar,
 	saveUserHotbarOnFirstUse,
-} from "./src/features.mjs";
-import { registerModuleSettings, getModuleSettings, settingKeys } from "./src/settings.mjs";
+} from "./scripts/features.mjs";
+import { log } from "./scripts/lib/lib.mjs";
+import { registerModuleSettings, getModuleSettings, settingKeys } from "./scripts/settings.mjs";
 
 // Register settings when the game is properly initialized
 // This is exactly what the 'init' hook is for:
@@ -17,14 +19,18 @@ Hooks.on("init", () => {
 	log("Module Initialized!");
 });
 
+Hooks.once("setup", function () {
+	setApi(API);
+});
+
 Hooks.on("ready", () => {
 	const getSetting = getModuleSettings(game.settings);
 	if (getSetting(settingKeys.useCustomHotbar) && !ui.customHotbar) {
 		warn("Settings use Custom Hotbar, but Custom Hotbar is installed or enabled. Using standard hotbar instead.");
-		game.settings.set(TH.name, settingKeys.useCustomHotbar, false);
+		game.settings.set(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar, false);
 	}
 
-	saveUserHotbarOnFirstUse(game.user, game.user.data.hotbar);
+	saveUserHotbarOnFirstUse(game.user, game.user.hotbar);
 });
 
 // Let's save the hotbar whenever
@@ -94,4 +100,37 @@ Hooks.on("controlToken", (object, isControlled) => {
 
 // Finally, we would like to save from macro's, so sharing becomes easier.
 // Easiest way to do that is to add a TokenHotbar object to the global scope
-window[TH.name] = { saveHotbar };
+// window[CONSTANTS.name] = { saveHotbar };
+
+/**
+ * Initialization helper, to set API.
+ * @param api to set to game module.
+ */
+export function setApi(api) {
+	const data = game.modules.get(CONSTANTS.MODULE_NAME);
+	data.api = api;
+}
+/**
+ * Returns the set API.
+ * @returns Api from games module.
+ */
+export function getApi() {
+	const data = game.modules.get(CONSTANTS.MODULE_NAME);
+	return data.api;
+}
+/**
+ * Initialization helper, to set Socket.
+ * @param socket to set to game module.
+ */
+export function setSocket(socket) {
+	const data = game.modules.get(CONSTANTS.MODULE_NAME);
+	data.socket = socket;
+}
+/*
+ * Returns the set socket.
+ * @returns Socket from games module.
+ */
+export function getSocket() {
+	const data = game.modules.get(CONSTANTS.MODULE_NAME);
+	return data.socket;
+}

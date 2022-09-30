@@ -16,6 +16,24 @@
 			"enableHotbar": {
 				"name": "Enable Token Hotbar",
 				"hint": "Enable the Token Hotbar on this client."
+			},
+			"reset": {
+				"name": "Reset settings to default",
+				"label": "Reset Settings To Default",
+				"hint": "This will reset all of the settings of back to the active game system's default."
+			},
+			"debug": {
+				"name": "Enable debugging",
+				"label": "Prints debug messages to the console",
+				"hint": " "
+			}
+		},
+		"dialogs": {
+			"resetsettings": {
+				"title": "Reset Module Settings",
+				"content": "Are you sure you want to reset all of the module settings to the current system's defaults? <strong>THIS CANNOT BE UNDONE!</strong>",
+				"confirm": "Reset Module Settings",
+				"cancel": "Cancel"
 			}
 		}
 	}

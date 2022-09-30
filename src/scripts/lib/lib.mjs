@@ -1,7 +1,10 @@
+import CONSTANTS from "../constants.mjs";
+
 // ================================
 // Logger utility
 // ================================
 // export let debugEnabled = 0;
+
 // 0 = none, warnings = 1, debug = 2, all = 3
 export function debug(msg, args = "") {
 	if (game.settings.get(CONSTANTS.MODULE_NAME, "debug")) {

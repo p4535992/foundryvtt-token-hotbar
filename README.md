@@ -40,9 +40,9 @@ tokens and with which player they want to share the hotbar. You can find this ma
 <img src="./wiki/img/thb-shared.gif" width="100%" >
 </p>
 
-### Settings
-* **Always link to actor:** link the hotbar to the actor, even if the token itself is not linked.
+## Settings
 
+* **Always link to actor:** link the hotbar to the actor, even if the token itself is not linked.
 * **Use Custom Hotbar:** Place the Token Hotbar on [Norc's Custom Hotbar](https://github.com/Norc/foundry-custom-hotbar), instead of the original hotbar.
 * **Debug Mode:** Show detailed messages in the console (F12).
 
@@ -59,20 +59,15 @@ tokens and with which player they want to share the hotbar. You can find this ma
 * 🇧🇷 Português (Brazil)
 * 🇷🇴 Română
 
-## FAQ
 
-## Contributing
+## Credits
+
 Feel free to test out the latest beta using the following manifest link:
 ```
 https://fvtt.janssen.io/tokenhotbar/beta/module.json
 ```
-
-___
-
 If you wish to help out with development, then clone the repo and start digging in!
 Unit tests are much appreciated. :)
-
-#### Why did you create a new package?
 
 The original Token Hotbar had some issues which were hard to resolve ([#38](https://github.com/League-of-Foundry-Developers/foundry-token-hotbar/issues/46), [#46](https://github.com/League-of-Foundry-Developers/foundry-token-hotbar/issues/46) and [#50](https://github.com/League-of-Foundry-Developers/foundry-token-hotbar/issues/50)). So I created this new version that has a more stable, but unfortunately also more limited functionality.
 
