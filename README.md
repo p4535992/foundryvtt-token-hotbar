@@ -1,60 +1,49 @@
-### ⚠ _This module is deprecated in favour of [Token Hotbar (v8+)](https://github.com/janssen-io/foundry-tokenhotbar-js)_
-
----
-
 <h1 align="center">Token Hotbar</h1>
 <p align="center">
 <img src="https://github.com/janssen-io/foundry-token-hotbar/workflows/TokenHotbar%20CI/badge.svg" alt="build status" /> <img src="https://img.shields.io/github/downloads-pre/janssen-io/foundry-token-hotbar/v4.2.1/TokenHotbar.zip?label=v4.2.1" alt="v4.2.1 downloads" />
 <img src="https://github.com/janssen-io/foundry-token-hotbar/workflows/TokenHotbar%20CI/badge.svg" alt="build status" /> <img src="https://img.shields.io/github/downloads-pre/janssen-io/foundry-token-hotbar/v4.2.2/TokenHotbar.zip?label=v4.2.2" alt="v4.2.2 downloads" />
 </p>
 
-Using this Foundry VTT module, you can assign one of the hotbar pages to remember macros per token.
-If the token is linked to an actor, the hotbar will be associated with the actor.
+This module provides a unique hotbar for every token. If the token is linked to an actor (for player characters), then all tokens of that actor will have the same hotbar.
+
+It's slimmed down to make maintenance easier and hopefully the code is easier to understand for
+anyone who has ever written a macro in Foundry.
 
 ## Features
 
 ### Dynamically change the hotbar
-Based on your settings, one page of the macro hotbar will be used to dynamically change the macros based on your selected token.
+
+All pages of the hotbar will change depending on the token you have selected.
 
 <p align="center">
 <img src="./img/thb-basics.gif" width="500px">
 </p>
 
 ### Use an additional hotbar
-Token Hotbar integrates with Norc's [Custom Hotbar](https://foundryvtt.com/packages/custom-hotbar/), keeping the original 5 hotbar pages free and giving you a dedicated Token Hotbar.
+
+Since version [1.3.1](https://github.com/janssen-io/foundry-tokenhotbar-js/releases/v1.3.1), this module supports using [Norc's Custom Hotbar](https://github.com/Norc/foundry-custom-hotbar) to place the Token Hotbar on. You can enable this in the settings.
 
 <p align="center">
 <img src="./img/thb-custom-hotbar.gif" width="500px">
 </p>
 
+### Enable the Token Hotbar per client
+
+Since version [1.3.1](https://github.com/janssen-io/foundry-tokenhotbar-js/releases/v1.3.1), this module supports enabling and disabling the Token Hotbar per client. For example, the GM can use this to have different hotbars for different tokens. But the players might want a single hotbar as they usually control a single token anyway.
+
 ### Shared Token Hotbar
-The token hotbar can be shared between players. Example: as the player on the right makes a change, the hotbar of the player on the left gets reloaded.
+
+Hotbar's can be shared manually via the provided macro. A GM can run this macro and select for which
+tokens and with which player they want to share the hotbar. You can find this macro in the compendium 'Token Hotbar'.
 
 <p align="center">
 <img src="./img/thb-shared.gif" width="100%" >
 </p>
 
-### Lock Shared Hotbar
-The shared hotbar can also be locked, so that only the GMs can edit it.
-
-<p align="center">
-<img src="./img/thb-locked.gif" width="500px" />
-</p>
-
-### Automatically switch hotbar pages
-When selecting a token with macros on its hotbar, it will automatically switch to the right page. When deselecting, it will switch back to the previous page you were on.
-
-<p align="center">
-<img src="./img/thb-go-back-to-active.gif" width="500px" />
-</p>
-
 ### Settings
-* **Page:** the hotbar page to use as token hotbar.
-* **Link to actor:** link the token hotbar to the linked actor, such that for each linked token of this actor, the same token hotbar will be displayed.
 * **Always link to actor:** link the hotbar to the actor, even if the token itself is not linked.
-* **Share the hotbar with other players:** every player will see the same hotbar for the particular token.
-* **Locked shared hotbar:** only GMs can modify hotbars (requires the above setting).
-* **Use Custom Hotbar:** Use the additional hotbar provided by Norc's Custom Hotbar module.
+
+* **Use Custom Hotbar:** Place the Token Hotbar on [Norc's Custom Hotbar](https://github.com/Norc/foundry-custom-hotbar), instead of the original hotbar.
 * **Debug Mode:** Show detailed messages in the console (F12).
 
 ## Available Languages
@@ -70,6 +59,8 @@ When selecting a token with macros on its hotbar, it will automatically switch t
 * 🇧🇷 Português (Brazil)
 * 🇷🇴 Română
 
+## FAQ
+
 ## Contributing
 Feel free to test out the latest beta using the following manifest link:
 ```
@@ -81,3 +72,8 @@ ___
 If you wish to help out with development, then clone the repo and start digging in!
 Unit tests are much appreciated. :)
 
+#### Why did you create a new package?
+
+The original Token Hotbar had some issues which were hard to resolve ([#38](https://github.com/League-of-Foundry-Developers/foundry-token-hotbar/issues/46), [#46](https://github.com/League-of-Foundry-Developers/foundry-token-hotbar/issues/46) and [#50](https://github.com/League-of-Foundry-Developers/foundry-token-hotbar/issues/50)). So I created this new version that has a more stable, but unfortunately also more limited functionality.
+
+On top of that, the code is kept more straight forward so it's easier for other developers to see what's going on (and perhaps help with maintenance later on).
