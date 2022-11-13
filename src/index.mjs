@@ -120,7 +120,7 @@ Hooks.on("deleteToken", async (tokenDocument, data, updateData) => {
 		return;
 	}
 	if (!tokenDocument.isLinked) {
-		const documentWithHotbar = user;
+		const documentWithHotbar = game.user;
 		const entity = determineEntityForHotbar(controlledTokens, user);
 		removeEntityFromHotbar(documentWithHotbar, entity);
 	}
