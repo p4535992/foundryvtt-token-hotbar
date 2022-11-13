@@ -24,11 +24,11 @@ Hooks.once("setup", function () {
 	setApi(API);
 });
 
-Hooks.on("ready", () => {
+Hooks.once("ready", () => {
 	//if (game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar) && !ui.customHotbar) {
 	if (
 		game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar) &&
-		game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active
+		!game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active
 	) {
 		warn(
 			"Settings use Norc's Custom Hotbar, but Norc's Custom Hotbar is not installed or enabled. Using standard hotbar instead."
