@@ -8,6 +8,7 @@ import {
 	loadCustomHotbar,
 	saveUserHotbarOnFirstUse,
 	removeEntityFromHotbar,
+	determineEntityForHotbar,
 } from "./scripts/features.mjs";
 import { log } from "./scripts/lib/lib.mjs";
 import { registerSettings, settingKeys } from "./scripts/settings.mjs";
@@ -118,7 +119,7 @@ Hooks.on("deleteToken", async (tokenDocument, data, updateData) => {
 	if (!game.user?.isGM && !isPlayerOwned) {
 		return;
 	}
-	if (!token.document.isLinked) {
+	if (!tokenDocument.isLinked) {
 		const documentWithHotbar = user;
 		const entity = determineEntityForHotbar(controlledTokens, user);
 		removeEntityFromHotbar(documentWithHotbar, entity);

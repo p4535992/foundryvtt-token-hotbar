@@ -107,7 +107,7 @@ export async function loadHotbar(user, controlledTokens) {
 	return true;
 }
 
-function determineEntityForHotbar(controlledTokens, user) {
+export function determineEntityForHotbar(controlledTokens, user) {
 	if (controlledTokens.length === 0) {
 		// use the user id as we are storing the hotbar of the user
 		return user;
@@ -120,6 +120,8 @@ function determineEntityForHotbar(controlledTokens, user) {
 		return game.settings.get(CONSTANTS.MODULE_NAME, settingKeys.alwaysUseActor) || token.document.isLinked
 			? token.actor
 			: token;
+	} else {
+		warn(`The module not support the multi token integration for security issues`);
 	}
 }
 
