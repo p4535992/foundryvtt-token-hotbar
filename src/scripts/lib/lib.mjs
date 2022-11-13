@@ -62,3 +62,51 @@ export function dialogWarning(message, icon = "fas fa-exclamation-triangle") {
     </p>`;
 }
 // =========================================================================================
+export function getActor(target) {
+	if (target instanceof Actor) return target;
+	if (stringIsUuid(target)) {
+		target = fromUuidSync(target);
+	}
+	target = getDocument(target);
+	return target?.actor ?? target;
+}
+
+export function getToken(documentUuid) {
+	const document = fromUuidSync(documentUuid);
+	return document instanceof TokenDocument ? document.object : document;
+}
+
+export function getDocument(target) {
+	if (stringIsUuid(target)) {
+		target = fromUuidSync(target);
+	}
+	return target?.document ?? target;
+}
+
+export function stringIsUuid(inId) {
+	return typeof inId === "string" && (inId.match(/\./g) || []).length && !inId.endsWith(".");
+}
+
+export function getUuid(target) {
+	if (stringIsUuid(target)) return target;
+	const document = getDocument(target);
+	return document?.uuid ?? false;
+}
+
+/**
+ * Retrieves all visible tokens on a given location
+ *
+ * @param position
+ * @returns {Array<Token>}
+ */
+export function getTokensAtLocation(position) {
+	const tokens = [...canvas.tokens.placeables].filter((token) => token.mesh.visible);
+	return tokens.filter((token) => {
+		return (
+			position.x >= token.x &&
+			position.x < token.x + token.document.width * canvas.grid.size &&
+			position.y >= token.y &&
+			position.y < token.y + token.document.height * canvas.grid.size
+		);
+	});
+}
