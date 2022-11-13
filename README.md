@@ -34,6 +34,12 @@ To install this module manually:
 4.  Click 'Install' and wait for installation to complete
 5.  Don't forget to enable the module in game using the "Manage Module" button
 
+## Strongly recommended in combination with these other modules
+
+- []()
+- []()
+- []()
+
 ## Features
 
 ### Dynamically change the hotbar
