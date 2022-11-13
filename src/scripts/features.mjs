@@ -60,8 +60,22 @@ export async function updateHotbar(controlledTokens, currentUser, user, userData
 export async function saveHotbar(hotbarToStore, documentWithHotbar, entity) {
 	debug(`Storing hotbar for ${entity.constructor.name} on document`, { documentWithHotbar, entity, hotbarToStore });
 	// use the token id as we are storing the hotbar of the token
-	await documentWithHotbar.unsetFlag(CONSTANTS.MODULE_NAME, `${entity.id}`);
+	// await documentWithHotbar.unsetFlag(CONSTANTS.MODULE_NAME, `${entity.id}`);
 	await documentWithHotbar.setFlag(CONSTANTS.MODULE_NAME, `${entity.id}`, hotbarToStore);
+}
+
+/**
+ * Delete the entity's hotbar onto some document.
+ * The entity's ID will be used to store different hotbars on the same document.
+ * @param hotbarToStore The hotbar to store
+ * @param documentWithHotbar The document to store the hotbar onto (in their flags)
+ * @param entity The entity to store the hotbar for. Usually the user itself, the token or its actor.
+ */
+export async function removeEntityFromHotbar(documentWithHotbar, entity) {
+	debug(`Deleting hotbar for ${entity.constructor.name} on document ` + entity.name);
+	if (documentWithHotbar.getFlag(CONSTANTS.MODULE_NAME, `${entity.id}`)) {
+		await documentWithHotbar.unsetFlag(CONSTANTS.MODULE_NAME, `${entity.id}`);
+	}
 }
 
 /**

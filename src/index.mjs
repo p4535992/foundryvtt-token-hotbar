@@ -7,6 +7,7 @@ import {
 	updateCustomHotbar,
 	loadCustomHotbar,
 	saveUserHotbarOnFirstUse,
+	removeEntityFromHotbar,
 } from "./scripts/features.mjs";
 import { log } from "./scripts/lib/lib.mjs";
 import { registerSettings, settingKeys } from "./scripts/settings.mjs";
@@ -110,6 +111,18 @@ Hooks.on("controlToken", (object, isControlled) => {
 			}
 		}
 	}, 100);
+});
+
+Hooks.on("deleteToken", async (tokenDocument, data, updateData) => {
+	const isPlayerOwned = tokenDocument.isOwner;
+	if (!game.user?.isGM && !isPlayerOwned) {
+		return;
+	}
+	if (!token.document.isLinked) {
+		const documentWithHotbar = user;
+		const entity = determineEntityForHotbar(controlledTokens, user);
+		removeEntityFromHotbar(documentWithHotbar, entity);
+	}
 });
 
 // Note: we try to stay clear from global variables (game.canvas for example)
