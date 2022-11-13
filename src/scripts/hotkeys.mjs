@@ -1,4 +1,4 @@
-import CONSTANTS from "./constants.js";
+import CONSTANTS from "./constants.mjs";
 
 export const hotkeyState = {
 	ctrlDown: false,
@@ -38,6 +38,7 @@ export function registerHotkeysPre() {
 		}
 	}
 }
+
 /*
 export function registerHotkeysPost() {
 	if (!game.user.isGM) {

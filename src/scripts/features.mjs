@@ -60,7 +60,8 @@ export async function updateHotbar(controlledTokens, currentUser, user, userData
 export async function saveHotbar(hotbarToStore, documentWithHotbar, entity) {
 	debug(`Storing hotbar for ${entity.constructor.name} on document`, { documentWithHotbar, entity, hotbarToStore });
 	// use the token id as we are storing the hotbar of the token
-	// await documentWithHotbar.unsetFlag(CONSTANTS.MODULE_NAME, `${entity.id}`);
+	// We nee this for avoid duplicate ???
+	await documentWithHotbar.unsetFlag(CONSTANTS.MODULE_NAME, `${entity.id}`);
 	await documentWithHotbar.setFlag(CONSTANTS.MODULE_NAME, `${entity.id}`, hotbarToStore);
 }
 
