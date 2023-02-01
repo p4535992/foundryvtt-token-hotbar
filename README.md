@@ -173,16 +173,3 @@ This package is under an [MIT license](LICENSE) and the [Foundry Virtual Tableto
 Thanks to anyone who helps me with this code! I appreciate the user community's feedback on this project!
 
 A very big thanks to [janssen](https://github.com/janssen-io), for update this module for 0.8.9 and make it work for 9 [foundry-tokenhotbar-js](https://github.com/janssen-io/foundry-tokenhotbar-js).
-
-## Acknowledgements
-
-Feel free to test out the latest beta using the following manifest link:
-```
-https://fvtt.janssen.io/tokenhotbar/beta/module.json
-```
-If you wish to help out with development, then clone the repo and start digging in!
-Unit tests are much appreciated. :)
-
-The original Token Hotbar had some issues which were hard to resolve ([#38](https://github.com/League-of-Foundry-Developers/foundry-token-hotbar/issues/46), [#46](https://github.com/League-of-Foundry-Developers/foundry-token-hotbar/issues/46) and [#50](https://github.com/League-of-Foundry-Developers/foundry-token-hotbar/issues/50)). So I created this new version that has a more stable, but unfortunately also more limited functionality.
-
-On top of that, the code is kept more straight forward so it's easier for other developers to see what's going on (and perhaps help with maintenance later on).
