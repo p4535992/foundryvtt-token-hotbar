@@ -17,11 +17,11 @@ import { registerSettings, settingKeys } from "./scripts/settings.mjs";
 // Register settings when the game is properly initialized
 // This is exactly what the 'init' hook is for:
 Hooks.on("init", () => {
-	const hasCustomHotbar = game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active;
+	// const hasCustomHotbar = game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active;
 	// TODO seem not to work...
 	// registerHotkeysPre();
 	// registerSettings(game.settings, hasCustomHotbar);
-	registerSettings(hasCustomHotbar);
+	registerSettings();
 	log("Module Initialized!");
 });
 
