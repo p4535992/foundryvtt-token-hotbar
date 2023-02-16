@@ -6,7 +6,7 @@ const API = {
 	},
 	// Replace `game.user` with `game.users.get(otherUserId)` to share another
 	// user's hotbar instead of yours.
-	shareHotBar: async function (userId) {
+	shareHotbar: async function (userId) {
 		await shareHotbar(userId);
 	},
 };

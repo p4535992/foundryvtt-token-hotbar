@@ -1,3 +1,7 @@
+### 1.4.7
+
+- First new release for foundryvtt 
+
 ### 1.4.1
 
 - Start my own forked project
