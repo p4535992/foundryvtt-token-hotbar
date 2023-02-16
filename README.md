@@ -20,6 +20,8 @@ It's slimmed down to make maintenance easier and hopefully the code is easier to
 
 This is a follow up of the job done from [janssen](https://github.com/janssen-io) on the module [foundry-tokenhotbar-js](https://github.com/janssen-io/foundry-tokenhotbar-js) forked from the original league repository.
 
+[![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/kandashi)
+
 ## Known issue/Limitation
 
 ## Installation
