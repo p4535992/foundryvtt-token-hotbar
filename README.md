@@ -14,13 +14,13 @@
 
 [![Translation status](https://weblate.foundryvtt-hub.com/widgets/token-hotbar/-/287x66-black.png)](https://weblate.foundryvtt-hub.com/engage/token-hotbar/)
 
+### If you want to buy me a coffee [![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/p4535992)
+
 This module provides a unique hotbar for every token. If the token is linked to an actor (for player characters), then all tokens of that actor will have the same hotbar.
 
 It's slimmed down to make maintenance easier and hopefully the code is easier to understand for anyone who has ever written a macro in Foundry.
 
 This is a follow up of the job done from [janssen](https://github.com/janssen-io) on the module [foundry-tokenhotbar-js](https://github.com/janssen-io/foundry-tokenhotbar-js) forked from the original league repository.
-
-[![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/kandashi)
 
 ## Known issue/Limitation
 
