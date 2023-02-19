@@ -10,9 +10,9 @@ export const settingKeys = {
 	debug: "debug",
 };
 
-const hasCustomHotbar = game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active;
-
 export const registerSettings = function () {
+	const hasCustomHotbar = game.modules.get(CONSTANTS.CUSTOM_HOTBAR_MODULE_NAME)?.active;
+
 	game.settings.register(CONSTANTS.MODULE_NAME, settingKeys.enableHotbar, {
 		name: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.enableHotbar}.name`,
 		hint: `${CONSTANTS.MODULE_NAME}.settings.${settingKeys.enableHotbar}.hint`,

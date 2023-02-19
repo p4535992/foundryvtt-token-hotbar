@@ -2,7 +2,7 @@
   "name": "token-hotbar",
   "title": "Token Hotbar",
   "description": "",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "main": "index.mjs",
 	"scripts": {
 		"publish": "gulp publish --update",
