@@ -12,7 +12,7 @@
 
 ![GitHub all releases](https://img.shields.io/github/downloads/p4535992/foundryvtt-token-hotbar/total?style=for-the-badge)
 
-[![Translation status](https://weblate.foundryvtt-hub.com/widgets/token-hotbar/-/287x66-black.png)](https://weblate.foundryvtt-hub.com/engage/token-hotbar/)
+[![Translation status](https://weblate.foundryvtt-hub.com/widgets/token-hotbar/-/multi-auto.svg)](https://weblate.foundryvtt-hub.com/engage/token-hotbar/)
 
 ### If you want to buy me a coffee [![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/p4535992)
 
