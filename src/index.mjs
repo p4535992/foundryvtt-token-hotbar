@@ -8,7 +8,7 @@ import {
 	loadCustomHotbar,
 	saveUserHotbarOnFirstUse,
 	removeEntityFromHotbar,
-	determineEntityForHotbar,
+	determineEntityForHotbar
 } from "./scripts/features.mjs";
 import { registerHotkeysPre } from "./scripts/hotkeys.mjs";
 import { log } from "./scripts/lib/lib.mjs";

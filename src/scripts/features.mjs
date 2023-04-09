@@ -98,7 +98,7 @@ export async function loadHotbar(user, controlledTokens) {
 	debug(`Loading Hotbar for ${entity.constructor.name} from document`, {
 		documentWithHotbar,
 		entity,
-		hotbarForToken,
+		hotbarForToken
 	});
 
 	// Use { recursive: false } to replace the hotbar, instead of merging it.
@@ -211,7 +211,7 @@ export function loadCustomHotbar(user, controlledTokens, customHotbar) {
 	debug(`Loading Custom Hotbar for ${entity.constructor.name} from document`, {
 		documentWithHotbar,
 		entity,
-		hotbarForToken,
+		hotbarForToken
 	});
 
 	// We set 'isUpdatingCustomHotbar' to prevent the Token Hotbar from updating itself when
@@ -278,14 +278,14 @@ export function shareHotbar(userId) {
 			share: {
 				icon: '<i class="fas fa-check"></i>',
 				label: "Share",
-				callback: shareHotbarCallback,
+				callback: shareHotbarCallback
 			},
 			cancel: {
 				icon: '<i class="fas fa-times"></i>',
-				label: "Cancel",
-			},
+				label: "Cancel"
+			}
 		},
-		default: "cancel",
+		default: "cancel"
 	});
 
 	d.render(true);

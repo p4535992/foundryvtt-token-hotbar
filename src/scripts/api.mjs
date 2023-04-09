@@ -8,6 +8,6 @@ const API = {
 	// user's hotbar instead of yours.
 	shareHotbar: async function (userId) {
 		await shareHotbar(userId);
-	},
+	}
 };
 export default API;

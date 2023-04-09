@@ -3,7 +3,7 @@ import CONSTANTS from "./constants.mjs";
 export const hotkeyState = {
 	ctrlDown: false,
 	altDown: false,
-	shiftDown: false,
+	shiftDown: false
 };
 
 export function registerHotkeysPre() {
@@ -18,8 +18,8 @@ export function registerHotkeysPre() {
 				editable: [
 					{
 						key: "Key" + macro_slot,
-						modifiers: [KeyboardManager.MODIFIER_KEYS?.SHIFT],
-					},
+						modifiers: [KeyboardManager.MODIFIER_KEYS?.SHIFT]
+					}
 				],
 				onDown: () => {
 					let macro_id = game.user.hotbar[macro_slot];
@@ -33,7 +33,7 @@ export function registerHotkeysPre() {
 				},
 				onUp: () => {},
 				// reservedModifiers: ["SHIFT", "ALT"],
-				precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL,
+				precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
 			});
 		}
 	}

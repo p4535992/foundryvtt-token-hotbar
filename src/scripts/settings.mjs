@@ -7,7 +7,7 @@ export const settingKeys = {
 	useCustomHotbar: "useCustomHotbar",
 	enableHotbar: "enableHotbar",
 	enableHotbarByRole: "enableHotbarByRole",
-	debug: "debug",
+	debug: "debug"
 };
 
 export const registerSettings = function () {
@@ -19,7 +19,7 @@ export const registerSettings = function () {
 		scope: "client",
 		config: true,
 		default: false,
-		type: Boolean,
+		type: Boolean
 	});
 
 	game.settings.register(CONSTANTS.MODULE_NAME, settingKeys.enableHotbarByRole, {
@@ -32,10 +32,10 @@ export const registerSettings = function () {
 			PLAYER: "Player",
 			TRUSTED: "Trusted",
 			ASSISTANT: "Assistant",
-			GAMEMASTER: "GameMaster",
+			GAMEMASTER: "GameMaster"
 		},
 		default: "NONE",
-		config: true,
+		config: true
 	});
 
 	game.settings.register(CONSTANTS.MODULE_NAME, settingKeys.alwaysUseActor, {
@@ -44,7 +44,7 @@ export const registerSettings = function () {
 		scope: "world",
 		config: true,
 		default: true,
-		type: Boolean,
+		type: Boolean
 	});
 
 	// game.settings.register(CONSTANTS.MODULE_NAME, settingKeys.debugMode, {
@@ -70,7 +70,7 @@ export const registerSettings = function () {
 			if (useCustomHotbar && !hasCustomHotbar) {
 				settings.set(CONSTANTS.MODULE_NAME, settingKeys.useCustomHotbar, false);
 			}
-		},
+		}
 	});
 
 	game.settings.register(CONSTANTS.MODULE_NAME, "debug", {
@@ -79,6 +79,6 @@ export const registerSettings = function () {
 		scope: "client",
 		config: true,
 		default: false,
-		type: Boolean,
+		type: Boolean
 	});
 };
