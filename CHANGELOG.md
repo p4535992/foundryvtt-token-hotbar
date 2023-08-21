@@ -1,10 +1,14 @@
+### 1.5.0-1
+
+- Upgrade fvtt11
+
 ### 1.4.10
 
 - Little update
 
 ### 1.4.7-8-9
 
-- First new release for foundryvtt 
+- First new release for foundryvtt
 
 ### 1.4.1
 

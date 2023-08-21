@@ -2,7 +2,7 @@
 	"name": "token-hotbar",
 	"title": "Token Hotbar",
 	"description": "With Token Hotbar, you can create a separate hotbar for every token and actor.",
-	"version": "1.5.0",
+	"version": "1.5.1",
 	"main": "module.js",
 	"license": "SEE LICENSE IN LICENSE",
 	"private": true,

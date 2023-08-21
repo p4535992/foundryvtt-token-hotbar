@@ -129,6 +129,19 @@ Hooks.on("deleteToken", async (tokenDocument, data, updateData) => {
   }
 });
 
+Hooks.on("destroyToken", (token) => {
+    const tokenDocument = token.document;
+    const isPlayerOwned = tokenDocument.isOwner;
+    if (!game.user?.isGM && !isPlayerOwned) {
+      return;
+    }
+    if (!tokenDocument.isLinked) {
+      const documentWithHotbar = game.user;
+      const entity = tokenDocument;
+      removeEntityFromHotbar(documentWithHotbar, entity);
+    }
+});
+
 // Note: we try to stay clear from global variables (game.canvas for example)
 //       in our code. The functions in the hooks only take out the variables
 //       from the global scope that we need. All other logic is in the rest of the code.
