@@ -1,4 +1,4 @@
-import { saveHotbar, shareHotbar } from "./features.mjs";
+import { saveHotbar, shareHotbar } from "./features.js";
 
 const API = {
     saveHotbar: async function (hotbarToStore, documentWithHotbar, entity) {

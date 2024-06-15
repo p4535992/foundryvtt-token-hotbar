@@ -1,5 +1,5 @@
-import CONSTANTS from "./constants.mjs";
-import { log } from "./lib/lib.mjs";
+import CONSTANTS from "./constants.js";
+import { log } from "./lib/lib.js";
 
 export const settingKeys = {
     alwaysUseActor: "alwaysUseActor",

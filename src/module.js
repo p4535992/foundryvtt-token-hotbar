@@ -1,5 +1,5 @@
-import API from "./scripts/api.mjs";
-import CONSTANTS from "./scripts/constants.mjs";
+import API from "./scripts/api.js";
+import CONSTANTS from "./scripts/constants.js";
 import {
     saveHotbar,
     updateHotbar,
@@ -9,10 +9,10 @@ import {
     saveUserHotbarOnFirstUse,
     removeEntityFromHotbar,
     determineEntityForHotbar,
-} from "./scripts/features.mjs";
-import { registerHotkeysPre } from "./scripts/hotkeys.mjs";
-import { log } from "./scripts/lib/lib.mjs";
-import { registerSettings, settingKeys } from "./scripts/settings.mjs";
+} from "./scripts/features.js";
+
+import { log } from "./scripts/lib/lib.js";
+import { registerSettings, settingKeys } from "./scripts/settings.js";
 
 // Register settings when the game is properly initialized
 // This is exactly what the 'init' hook is for:

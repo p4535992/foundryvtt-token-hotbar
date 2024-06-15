@@ -1,6 +1,6 @@
-import CONSTANTS from "./constants.mjs";
-import { debug } from "./lib/lib.mjs";
-import { settingKeys } from "./settings.mjs";
+import CONSTANTS from "./constants.js";
+import { debug } from "./lib/lib.js";
+import { settingKeys } from "./settings.js";
 
 /**
  * Store the user's hotbar if it hasn't been stored yet.

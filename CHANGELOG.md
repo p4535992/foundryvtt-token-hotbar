@@ -1,3 +1,7 @@
+### 1.5.2
+
+- Update manifest for v12
+
 ### 1.5.0-1
 
 - Upgrade fvtt11
