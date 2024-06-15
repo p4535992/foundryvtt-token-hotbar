@@ -1,42 +1,42 @@
 import CONSTANTS from "./constants.mjs";
 
 export const hotkeyState = {
-  ctrlDown: false,
-  altDown: false,
-  shiftDown: false,
+    ctrlDown: false,
+    altDown: false,
+    shiftDown: false,
 };
 
 export function registerHotkeysPre() {
-  // Register keybindings
-  for (let bar = 0; bar <= 4; bar++) {
-    for (let slot = 0; slot <= 9; slot++) {
-      let macro_slot = bar ? `${bar}${slot}` : `${slot}`;
+    // Register keybindings
+    for (let bar = 0; bar <= 4; bar++) {
+        for (let slot = 0; slot <= 9; slot++) {
+            let macro_slot = bar ? `${bar}${slot}` : `${slot}`;
 
-      game.keybindings.register(CONSTANTS.MODULE_NAME, `absHotbarBind${macro_slot}`, {
-        name: `Execute Hotbar ${bar + 1} Slot ${slot}`,
-        hint: `Pressing this will execute the macro in hotbar slot ${slot} of bar ${bar + 1}`,
-        editable: [
-          {
-            key: "Key" + macro_slot,
-            modifiers: [KeyboardManager.MODIFIER_KEYS?.SHIFT],
-          },
-        ],
-        onDown: () => {
-          let macro_id = game.user.hotbar[macro_slot];
-          if (macro_id) {
-            let macro = game.macros.get(macro_id);
-            if (macro) {
-              // Execute it
-              macro.execute();
-            }
-          }
-        },
-        onUp: () => {},
-        // reservedModifiers: ["SHIFT", "ALT"],
-        precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL,
-      });
+            game.keybindings.register(CONSTANTS.MODULE_NAME, `absHotbarBind${macro_slot}`, {
+                name: `Execute Hotbar ${bar + 1} Slot ${slot}`,
+                hint: `Pressing this will execute the macro in hotbar slot ${slot} of bar ${bar + 1}`,
+                editable: [
+                    {
+                        key: "Key" + macro_slot,
+                        modifiers: [KeyboardManager.MODIFIER_KEYS?.SHIFT],
+                    },
+                ],
+                onDown: () => {
+                    let macro_id = game.user.hotbar[macro_slot];
+                    if (macro_id) {
+                        let macro = game.macros.get(macro_id);
+                        if (macro) {
+                            // Execute it
+                            macro.execute();
+                        }
+                    }
+                },
+                onUp: () => {},
+                // reservedModifiers: ["SHIFT", "ALT"],
+                precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL,
+            });
+        }
     }
-  }
 }
 
 /*
